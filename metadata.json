@@ -1,0 +1,5 @@
+{
+  "name": "VeriTruth - Fake News Verifier",
+  "description": "A powerful misinformation detection tool that analyzes messages and images to provide trust scores, detailed explanations, and verified source references using Gemini's real-time search grounding.",
+  "requestFramePermissions": []
+}
