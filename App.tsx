@@ -1,9 +1,9 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { VerificationResult } from './types';
-import { verifyContent } from './services/geminiService';
-import VerdictBadge from './components/VerdictBadge';
-import ScoreGauge from './components/ScoreGauge';
+import { VerificationResult } from './types.ts';
+import { verifyContent } from './services/geminiService.ts';
+import VerdictBadge from './components/VerdictBadge.tsx';
+import ScoreGauge from './components/ScoreGauge.tsx';
 
 const App: React.FC = () => {
   const [inputText, setInputText] = useState('');
@@ -77,7 +77,6 @@ const App: React.FC = () => {
       setCurrentResult(result);
       setHistory(prev => [result, ...prev].filter((v, i, a) => a.findIndex(t => t.content === v.content) === i).slice(0, 15));
       
-      // Auto-scroll to result
       setTimeout(() => {
         resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
@@ -98,7 +97,6 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F7F9FB] text-slate-900 font-sans selection:bg-emerald-100">
-      {/* Dynamic Header */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-50 px-4 py-3 sm:py-4">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-3 group cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
@@ -121,13 +119,11 @@ const App: React.FC = () => {
       </header>
 
       <main className="max-w-4xl mx-auto px-4 py-8">
-        {/* Welcome Section */}
         <div className="mb-10 text-center sm:text-left">
           <h2 className="text-3xl font-extrabold text-slate-900 mb-2">Verify Before You Forward.</h2>
           <p className="text-slate-500 max-w-lg">Paste a message or upload a screenshot of a rumor to get a real-time fact-check and trust score.</p>
         </div>
 
-        {/* Action Area */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           <div className="lg:col-span-12">
             <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-white overflow-hidden">
@@ -226,7 +222,6 @@ const App: React.FC = () => {
           </div>
         )}
 
-        {/* Results Display */}
         {currentResult && (
           <div ref={resultRef} className="mt-10 animate-in fade-in slide-in-from-bottom-8 duration-700">
             <div className="bg-white rounded-[2rem] shadow-2xl shadow-slate-200 border border-slate-100 overflow-hidden">
@@ -326,7 +321,6 @@ const App: React.FC = () => {
           </div>
         )}
 
-        {/* History / Recent Activity */}
         {history.length > 0 && (
           <div className="mt-20">
             <div className="flex items-center justify-between mb-8">
@@ -382,51 +376,10 @@ const App: React.FC = () => {
       </main>
 
       <footer className="mt-32 bg-slate-900 pt-20 pb-10 text-slate-400">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
-            <div className="col-span-1 md:col-span-1">
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="bg-emerald-500 p-2 rounded-lg text-white">
-                  <i className="fas fa-check-double text-lg"></i>
-                </div>
-                <h3 className="text-white font-bold text-xl">VeriTruth</h3>
-              </div>
-              <p className="text-sm leading-relaxed mb-6">
-                Our mission is to empower individuals with real-time fact-checking tools to combat the plague of misinformation in messaging apps.
-              </p>
-              <div className="flex space-x-4">
-                <a href="#" className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition-all"><i className="fab fa-twitter"></i></a>
-                <a href="#" className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition-all"><i className="fab fa-github"></i></a>
-                <a href="#" className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition-all"><i className="fas fa-globe"></i></a>
-              </div>
-            </div>
-            
-            <div className="col-span-1">
-              <h4 className="text-white font-bold mb-6 uppercase text-xs tracking-widest">Technologies</h4>
-              <ul className="text-sm space-y-3">
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">Gemini 3 Pro Engine</a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">Google Search Grounding</a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">React 19 & Vite</a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">Tailwind CSS 3.4</a></li>
-              </ul>
-            </div>
-
-            <div className="col-span-1">
-              <h4 className="text-white font-bold mb-6 uppercase text-xs tracking-widest">Legal & Privacy</h4>
-              <ul className="text-sm space-y-3">
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">Terms of Service</a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">Responsible AI Use</a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">Data Transparency</a></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="pt-8 border-t border-slate-800 text-center">
-            <p className="text-xs font-medium tracking-wide">
-              &copy; {new Date().getFullYear()} VeriTruth AI Misinformation Lab. All claims are verified against publicly available data.
-            </p>
-          </div>
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <p className="text-xs font-medium tracking-wide">
+            &copy; {new Date().getFullYear()} VeriTruth AI Misinformation Lab. All claims are verified against publicly available data.
+          </p>
         </div>
       </footer>
     </div>

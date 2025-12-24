@@ -1,8 +1,7 @@
 
 import { GoogleGenAI } from "@google/genai";
-import { VerificationResult, Verdict, SearchGroundingChunk } from "../types";
+import { VerificationResult, Verdict, SearchGroundingChunk } from "../types.ts";
 
-// Always initialize a fresh instance to ensure the latest API key is used
 const getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
 
 export const verifyContent = async (text: string, imageData?: string): Promise<VerificationResult> => {
@@ -55,7 +54,6 @@ export const verifyContent = async (text: string, imageData?: string): Promise<V
     const resultText = response.text || "Unable to generate verification.";
     const chunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks as SearchGroundingChunk[] || [];
     
-    // Extract sources from grounding metadata
     const sources = chunks
       .filter(chunk => chunk.web)
       .map(chunk => ({
@@ -63,7 +61,6 @@ export const verifyContent = async (text: string, imageData?: string): Promise<V
         url: chunk.web!.uri
       }));
 
-    // Parse the semi-structured text response
     let verdict: Verdict = 'Unverified';
     let score = 50;
     
@@ -73,7 +70,6 @@ export const verifyContent = async (text: string, imageData?: string): Promise<V
     if (verdictMatch) verdict = verdictMatch[1] as Verdict;
     if (scoreMatch) score = parseInt(scoreMatch[1], 10);
 
-    // Fallback logic for verdict if parsing fails
     if (verdict === 'Unverified') {
       const lowerText = resultText.toLowerCase();
       if (lowerText.includes('mostly true')) verdict = 'Mostly True';
@@ -91,7 +87,7 @@ export const verifyContent = async (text: string, imageData?: string): Promise<V
       verdict,
       score,
       explanation: resultText,
-      sources: sources.slice(0, 5) // Limit to top 5 sources
+      sources: sources.slice(0, 5)
     };
   } catch (error) {
     console.error("Verification Error:", error);
